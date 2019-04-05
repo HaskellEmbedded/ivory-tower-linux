@@ -1,0 +1,59 @@
+{-# LANGUAGE DataKinds #-}
+{-# LANGUAGE TypeOperators #-}
+
+module Ivory.OS.Linux.Tower.IO where
+import Ivory.Language
+import Ivory.Tower
+
+printk :: Def ('[IString] ':-> ())
+printk = importProc "printk" "linux/printk.h"
+
+printk_u8 :: Def ('[IString, Uint8] ':-> ())
+printk_u8 = importProc "printk" "linux/printk.h"
+
+
+uses_printk = do
+  incl printk
+  incl printk_u8
+{-
+import Ivory.OS.Linux.Tower.EventLoop
+import Ivory.OS.Linux.Tower.Signal
+
+type FD = Sint32
+
+stdin, stdout, stderr :: FD
+stdin = extern "STDIN_FILENO" "unistd.h"
+stdout = extern "STDOUT_FILENO" "unistd.h"
+stderr = extern "STDERR_FILENO" "unistd.h"
+
+readFD :: String -> FD -> Tower e (ChanOutput ('Stored Uint8))
+readFD name fd = do
+  (sink, source) <- channel
+
+  watchIO name fd ReadOnly $ \ sig global_watcher -> do
+    let unix_read :: Def ('[FD, Ref s ('CArray ('Stored Uint8)), Uint32] ':-> Sint32)
+        unix_read = importProc "read" "unistd.h"
+
+    monitorModuleDef $ do
+      uses_libev
+      incl unix_read
+
+    handler sig "readable" $ do
+      -- this used to be a 512 byte chunk, but the generated emitter delivery
+      -- had too many nested parens for clang to compile without a special
+      -- option. so instead lets just make it work on smaller chunks.
+      target <- emitter sink 128
+      callback $ const $ do
+        buf <- local (izero :: Init ('Array 128 ('Stored Uint8)))
+        got <- call unix_read fd (toCArray buf) (arrayLen buf)
+        ifte_ (got <=? 0)
+          (do
+            loop <- call ev_default_loop 0
+            call_ ev_io_stop loop global_watcher
+          ) (do
+            for (toIx got) $ \ i -> do
+              emit target $ constRef buf ! i
+          )
+
+  return source
+-}

@@ -1,0 +1,3 @@
+packages: . ../tower/*/*.cabal ../ivory/*/*.cabal
+constraints: ivory-tower-linux -use-template-haskell
+allow-newer: all

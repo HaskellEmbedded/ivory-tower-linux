@@ -1,0 +1,77 @@
+name:                ivory-tower-linux
+version:             0.1.0.0
+-- synopsis:            
+-- description:         
+license:             BSD3
+license-file:        LICENSE
+author:              Richard Marko
+maintainer:          srk@48.io
+copyright:           (c) 2019 48.io
+category:            Language
+build-type:          Simple
+cabal-version:       >=1.10
+
+library
+  exposed-modules:     Ivory.OS.Linux.Tower,
+                       Ivory.OS.Linux.Tower.IO,
+                       Ivory.OS.Linux.Tower.Time,
+                       Ivory.OS.Linux.Tower.KThread
+                       -- Ivory.OS.Linux.Tower.Serial,
+                       -- Ivory.OS.Linux.Tower.Signal
+  other-modules:       Paths_ivory_tower_linux
+  build-depends:       base >=4.7 && <5,
+                       base-compat >= 0.6,
+                       containers,
+                       ivory,
+                       ivory-artifact,
+                       ivory-backend-c,
+                       ivory-stdlib,
+                       tower,
+                       tower-hal
+  hs-source-dirs:      src
+  ghc-options:         -Wall
+  default-language:    Haskell2010
+
+
+executable test-tick-gen
+  main-is:             Tick.hs
+  hs-source-dirs:      tests
+  build-depends:       base >=4.7 && <5,
+                       ivory,
+                       ivory-stdlib,
+                       tower,
+                       ivory-tower-linux
+  ghc-options:         -Wall
+  default-language:    Haskell2010
+
+executable test-coroutine-gen
+  main-is:             Coroutine.hs
+  hs-source-dirs:      tests
+  build-depends:       base >=4.7 && <5,
+                       ivory,
+                       ivory-stdlib,
+                       tower,
+                       ivory-tower-linux
+  ghc-options:         -Wall
+  default-language:    Haskell2010 
+--
+--executable test-depends-gen
+--  main-is:             Depends.hs
+--  hs-source-dirs:      tests
+--  build-depends:       base >=4.7 && <5,
+--                       ivory,
+--                       tower,
+--                       ivory-tower-linux
+--  ghc-options:         -Wall
+--  default-language:    Haskell2010
+--
+--executable test-handlers-gen
+--  main-is:             Handlers.hs
+--  hs-source-dirs:      tests
+--  build-depends:       base >=4.7 && <5,
+--                       ivory,
+--                       ivory-stdlib,
+--                       tower,
+--                       ivory-tower-linux
+--  ghc-options:         -Wall
+--  default-language:    Haskell2010
