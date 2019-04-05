@@ -1,5 +1,5 @@
 
-# [ivory-tower-linux][]
+# ivory-tower-linux
 
 ## About
 
